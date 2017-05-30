@@ -2,10 +2,9 @@ package com.alexsukharev.carouselltopics.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.alexsukharev.carouselltopics.App;
+import com.alexsukharev.carouselltopics.di.Components;
 import com.alexsukharev.carouselltopics.model.Topic;
 import com.alexsukharev.carouselltopics.repository.ITopicsRepository;
 
@@ -23,8 +22,8 @@ public class MainViewModel extends ViewModel {
     @Inject
     ITopicsRepository mTopicsRepository;
 
-    public MainViewModel(@NonNull final Context context) {
-        ((App) context.getApplicationContext()).getRepositoryComponent().inject(this);
+    public MainViewModel() {
+        Components.getRepositoryComponent().inject(this);
     }
 
     public LiveData<List<Topic>> getTopics() {
