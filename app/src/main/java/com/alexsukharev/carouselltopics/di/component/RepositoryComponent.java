@@ -1,5 +1,7 @@
 package com.alexsukharev.carouselltopics.di.component;
 
+import com.alexsukharev.carouselltopics.viewmodel.MainViewModel;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -8,6 +10,6 @@ import dagger.Component;
 @Component
 public interface RepositoryComponent {
 
-//    void inject(TopicListPresenter presenter);
+    void inject(MainViewModel viewModel);
 
 }
