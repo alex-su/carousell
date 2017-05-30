@@ -49,7 +49,7 @@ public class TopicsRepository implements ITopicsRepository {
     private void refreshLiveData(@NonNull final MutableLiveData<List<Topic>> liveData) {
         final List<Topic> topicList = new ArrayList<>(mTopics.values());
         Collections.sort(topicList);
-        liveData.setValue(mTopics.isEmpty() ? new ArrayList<>() : topicList.subList(0, Math.min(mTopics.size(), ITEMS_LIMIT)));
+        liveData.setValue(topicList.size() < ITEMS_LIMIT ? topicList : topicList.subList(0, ITEMS_LIMIT));
     }
 
     /**

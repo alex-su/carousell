@@ -36,7 +36,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void onDownvoteClicked(@NonNull final Topic topic) {
-        topic.setVotes(topic.getVotes() + 1);
+        topic.setVotes(topic.getVotes() - 1);
         mTopicsRepository.storeTopic(topic);
     }
 
