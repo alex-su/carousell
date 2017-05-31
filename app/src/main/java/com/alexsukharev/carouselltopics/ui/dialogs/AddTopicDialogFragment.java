@@ -1,8 +1,9 @@
 package com.alexsukharev.carouselltopics.ui.dialogs;
 
 import android.app.Dialog;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -12,37 +13,27 @@ import android.view.LayoutInflater;
 import com.alexsukharev.carouselltopics.databinding.DialogAddTopicBinding;
 import com.alexsukharev.carouselltopics.viewmodel.AddTopicViewModel;
 
-public class AddTopicDialogFragment extends DialogFragment {
+public class AddTopicDialogFragment extends DialogFragment implements LifecycleRegistryOwner {
 
     public static final String TAG = AddTopicDialogFragment.class.getSimpleName();
 
     private AddTopicViewModel mViewModel;
 
-    /**
-     * Dismisses the dialog when the field is set to false.
+    /*
+      There's no standard LifecycleDialogFragment, so we have to keep it here until the Architecture Components library is updated
      */
-    private Observable.OnPropertyChangedCallback mOnVisibilityChangedCallback = new Observable.OnPropertyChangedCallback() {
-        @Override
-        public void onPropertyChanged(final Observable observable, final int i) {
-            if (!mViewModel.isVisible.get()) {
-                dismiss();
-            }
-        }
-    };
+    private LifecycleRegistry mLifecycleRegistry = new LifecycleRegistry(this);
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Returns a cached ViewModel or creates a new one
         mViewModel = ViewModelProviders.of(this).get(AddTopicViewModel.class);
-        mViewModel.isVisible.addOnPropertyChangedCallback(mOnVisibilityChangedCallback);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Since ViewModel survives configuration changes, we need to unsubscribe from updates of the ObservableField to prevent leaking of this Fragment instance
-        mViewModel.isVisible.removeOnPropertyChangedCallback(mOnVisibilityChangedCallback);
+        mViewModel.isVisible.observe(this, isVisible -> {
+            if (isVisible != null && !isVisible) {
+                dismiss();
+            }
+        });
     }
 
     @NonNull
@@ -52,4 +43,8 @@ public class AddTopicDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getContext()).setView(binding.getRoot()).create();
     }
 
+    @Override
+    public LifecycleRegistry getLifecycle() {
+        return mLifecycleRegistry;
+    }
 }

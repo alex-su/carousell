@@ -3,7 +3,6 @@ package com.alexsukharev.carouselltopics.ui.activities;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -21,17 +20,6 @@ public class MainActivity extends LifecycleActivity {
 
     private MainViewModel mViewModel;
 
-    private Observable.OnPropertyChangedCallback mOnAddTopicVisibilityChangedCallback = new Observable.OnPropertyChangedCallback() {
-        @Override
-        public void onPropertyChanged(final Observable observable, final int i) {
-            if (mViewModel.addTopicDialogVisible.get() && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) == null) {
-                new AddTopicDialogFragment().show(getSupportFragmentManager(), AddTopicDialogFragment.TAG);
-            } else if (getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) != null) {
-                ((AddTopicDialogFragment) getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG)).dismiss();
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +30,7 @@ public class MainActivity extends LifecycleActivity {
         mBinding.setViewModel(mViewModel);
 
         initTopicList();
-
-        mViewModel.addTopicDialogVisible.addOnPropertyChangedCallback(mOnAddTopicVisibilityChangedCallback);
+        observeAddTopicDialogVisibility();
     }
 
     private void initTopicList() {
@@ -61,11 +48,16 @@ public class MainActivity extends LifecycleActivity {
         });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Since ViewModel survives configuration changes, we need to unsubscribe from updates of the ObservableField to prevent leaking of this Activity instance
-        // Unfortunately, DataBinding observable classes are not lifecycle-aware yet.
-        mViewModel.addTopicDialogVisible.removeOnPropertyChangedCallback(mOnAddTopicVisibilityChangedCallback);
+    private void observeAddTopicDialogVisibility() {
+        mViewModel.addTopicDialogVisible.observe(this, isVisible -> {
+            if (isVisible == null) {
+                return;
+            }
+            if (isVisible && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) == null) {
+                new AddTopicDialogFragment().show(getSupportFragmentManager(), AddTopicDialogFragment.TAG);
+            } else if (!isVisible && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) != null) {
+                ((AddTopicDialogFragment) getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG)).dismiss();
+            }
+        });
     }
 }
