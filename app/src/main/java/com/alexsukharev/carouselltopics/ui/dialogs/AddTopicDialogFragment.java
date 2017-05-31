@@ -29,7 +29,7 @@ public class AddTopicDialogFragment extends DialogFragment implements LifecycleR
         super.onCreate(savedInstanceState);
         // Returns a cached ViewModel or creates a new one
         mViewModel = ViewModelProviders.of(this).get(AddTopicViewModel.class);
-        mViewModel.isVisible.observe(this, isVisible -> {
+        mViewModel.getVisibility().observe(this, isVisible -> {
             if (isVisible != null && !isVisible) {
                 dismiss();
             }

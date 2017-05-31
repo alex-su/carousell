@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import com.alexsukharev.carouselltopics.di.Components;
 import com.alexsukharev.carouselltopics.model.Topic;
 import com.alexsukharev.carouselltopics.repository.ITopicsRepository;
-import com.alexsukharev.carouselltopics.util.DefaultMutableLiveData;
 
 import java.util.List;
 
@@ -26,8 +25,9 @@ public class MainViewModel extends ViewModel {
 
     /**
      * The visibility of the Add Topic dialog. Changes of this field will be reflected in the view.
+     * Although being a LiveData, this field works like an action trigger. Setting it to "true" triggers the dialog to be displayed.
      */
-    public MutableLiveData<Boolean> addTopicDialogVisible = new DefaultMutableLiveData<>(false);
+    private MutableLiveData<Boolean> mAddTopicDialogVisibility = new MutableLiveData<>();
 
     public MainViewModel() {
         Components.getRepositoryComponent().inject(this);
@@ -35,6 +35,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<List<Topic>> getTopics() {
         return mTopicsRepository.getTopics();
+    }
+
+    public LiveData<Boolean> getAddTopicDialogVisibility() {
+        return mAddTopicDialogVisibility;
     }
 
     public void onUpvoteClicked(@NonNull final Topic topic) {
@@ -50,10 +54,11 @@ public class MainViewModel extends ViewModel {
     }
 
     public void onAddTopicClicked() {
-        // Reset the state
-        addTopicDialogVisible.setValue(false);
         // Show dialog
-        addTopicDialogVisible.setValue(true);
+        mAddTopicDialogVisibility.setValue(true);
+        // We don't want the dialog to be displayed again after the configuration change (FragmentManager will do that for us),
+        // so the value should be set to back null
+        mAddTopicDialogVisibility.setValue(null);
     }
 
 }

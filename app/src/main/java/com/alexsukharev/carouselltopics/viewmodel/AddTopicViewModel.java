@@ -1,6 +1,7 @@
 
 package com.alexsukharev.carouselltopics.viewmodel;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
@@ -24,7 +25,7 @@ public class AddTopicViewModel extends ViewModel {
     /**
      * Visibility of the view
      */
-    public MutableLiveData<Boolean> isVisible = new DefaultMutableLiveData<>(true);
+    private MutableLiveData<Boolean> mVisibility = new DefaultMutableLiveData<>(true);
 
     /**
      * Corresponds to the text entered in the input field.
@@ -36,16 +37,20 @@ public class AddTopicViewModel extends ViewModel {
         Components.getRepositoryComponent().inject(this);
     }
 
+    public LiveData<Boolean> getVisibility() {
+        return mVisibility;
+    }
+
     public void onSubmitTopicClicked() {
         if (!newTopicText.get().isEmpty() && newTopicText.get().length() <= 255) {
             // After creating a topic, all observers will be notified of it
             mTopicsRepository.createTopic(newTopicText.get());
-            isVisible.setValue(false);
+            mVisibility.setValue(false);
         }
     }
 
     public void onDiscardTopicClicked() {
-        isVisible.setValue(false);
+        mVisibility.setValue(false);
     }
 
 }

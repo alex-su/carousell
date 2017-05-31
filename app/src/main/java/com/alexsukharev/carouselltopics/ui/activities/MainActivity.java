@@ -49,14 +49,9 @@ public class MainActivity extends LifecycleActivity {
     }
 
     private void observeAddTopicDialogVisibility() {
-        mViewModel.addTopicDialogVisible.observe(this, isVisible -> {
-            if (isVisible == null) {
-                return;
-            }
-            if (isVisible && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) == null) {
+        mViewModel.getAddTopicDialogVisibility().observe(this, isVisible -> {
+            if (isVisible != null && isVisible && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) == null) {
                 new AddTopicDialogFragment().show(getSupportFragmentManager(), AddTopicDialogFragment.TAG);
-            } else if (!isVisible && getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG) != null) {
-                ((AddTopicDialogFragment) getSupportFragmentManager().findFragmentByTag(AddTopicDialogFragment.TAG)).dismiss();
             }
         });
     }
