@@ -2,15 +2,11 @@ package com.alexsukharev.carouselltopics.model;
 
 import android.support.annotation.NonNull;
 
-/**
- * Created by alexandersukharev on 30/05/2017.
- */
-
 public class Topic implements Comparable<Topic> {
 
     private int id;
     private String name;
-    private int votes;
+    private int score;
 
     public int getId() {
         return id;
@@ -28,19 +24,19 @@ public class Topic implements Comparable<Topic> {
         this.name = name;
     }
 
-    public int getVotes() {
-        return votes;
+    public int getScore() {
+        return score;
     }
 
-    public void setVotes(final int votes) {
-        this.votes = votes;
+    public void setScore(final int score) {
+        this.score = score;
     }
 
     @Override
     public int compareTo(@NonNull final Topic topic) {
-        if (getVotes() > topic.getVotes()) {
+        if (getScore() < topic.getScore()) {
             return 1;
-        } else if (getVotes() < topic.getVotes()) {
+        } else if (getScore() > topic.getScore()) {
             return -1;
         } else {
             return 0;

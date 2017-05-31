@@ -34,12 +34,12 @@ public class MainViewModel extends ViewModel {
     }
 
     public void onUpvoteClicked(@NonNull final Topic topic) {
-        topic.setVotes(topic.getVotes() + 1);
+        topic.setScore(topic.getScore() + 1);
         mTopicsRepository.updateTopic(topic);
     }
 
     public void onDownvoteClicked(@NonNull final Topic topic) {
-        topic.setVotes(topic.getVotes() - 1);
+        topic.setScore(topic.getScore() - 1);
         mTopicsRepository.updateTopic(topic);
     }
 

@@ -22,6 +22,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicViewHolder> {
 
     public TopicsAdapter(@NonNull final MainViewModel viewModel) {
         super();
+        setHasStableIds(true);
         mViewModel = viewModel;
     }
 
@@ -41,6 +42,11 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicViewHolder> {
     @Override
     public int getItemCount() {
         return mTopicList.size();
+    }
+
+    @Override
+    public long getItemId(final int position) {
+        return mTopicList.get(position).getId();
     }
 
     public void setData(@NonNull final List<Topic> topicList) {

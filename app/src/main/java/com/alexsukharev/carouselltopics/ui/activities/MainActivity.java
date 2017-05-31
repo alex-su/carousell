@@ -50,6 +50,7 @@ public class MainActivity extends LifecycleActivity {
         mTopicsAdapter = new TopicsAdapter(mViewModel);
         mBinding.recyclerView.setAdapter(mTopicsAdapter);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerView.setHasFixedSize(true);
 
         // Observe changes of the list of topics
         mViewModel.getTopics().observe(this, topics -> {

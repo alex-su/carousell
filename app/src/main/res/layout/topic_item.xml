@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/padding_half"
-                    android:text="@{String.valueOf(topic.votes)}"
+                    android:text="@{String.valueOf(topic.score)}"
                     tools:text="3"/>
 
                 <ImageView
