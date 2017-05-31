@@ -25,7 +25,7 @@ public class MainViewModel extends ViewModel {
     ITopicsRepository mTopicsRepository;
 
     /**
-     * The visibility of the Add topic dialog. Changed of this field will be reflected in the view.
+     * The visibility of the Add Topic dialog. Changes of this field will be reflected in the view.
      */
     public MutableLiveData<Boolean> addTopicDialogVisible = new DefaultMutableLiveData<>(false);
 
