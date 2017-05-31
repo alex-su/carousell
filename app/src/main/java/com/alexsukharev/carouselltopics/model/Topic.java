@@ -39,7 +39,13 @@ public class Topic implements Comparable<Topic> {
         } else if (getScore() > topic.getScore()) {
             return -1;
         } else {
-            return 0;
+            if (getId() > topic.getId()) {
+                return 1;
+            } else if (getId() < topic.getId()) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
     }
 
