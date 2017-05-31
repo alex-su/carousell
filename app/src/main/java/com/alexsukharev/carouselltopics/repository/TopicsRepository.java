@@ -32,6 +32,8 @@ public class TopicsRepository implements ITopicsRepository {
      */
     private MutableLiveData<List<Topic>> mCachedLiveData;
 
+    private int mLastItemId;
+
     /**
      * Get the most upvoted topics.
      * @return LiveData with a list of max. 20 topics
@@ -58,11 +60,19 @@ public class TopicsRepository implements ITopicsRepository {
      * @param topic The object to store
      */
     @Override
-    public void storeTopic(@NonNull final Topic topic) {
+    public void updateTopic(@NonNull final Topic topic) {
         mTopics.put(topic.getId(), topic);
         if (mCachedLiveData != null) {
             refreshLiveData(mCachedLiveData);
         }
+    }
+
+    @Override
+    public void createTopic(@NonNull final String name) {
+        final Topic topic = new Topic();
+        topic.setId(++mLastItemId);
+        topic.setName(name);
+        updateTopic(topic);
     }
 
 }

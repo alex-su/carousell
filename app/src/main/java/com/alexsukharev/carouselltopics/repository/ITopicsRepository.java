@@ -17,6 +17,8 @@ public interface ITopicsRepository {
     @NonNull
     LiveData<List<Topic>> getTopics();
 
-    void storeTopic(@NonNull Topic topic);
+    void updateTopic(@NonNull Topic topic);
+
+    void createTopic(@NonNull String text);
 
 }

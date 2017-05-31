@@ -2,6 +2,7 @@ package com.alexsukharev.carouselltopics.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
 import com.alexsukharev.carouselltopics.di.Components;
@@ -22,6 +23,8 @@ public class MainViewModel extends ViewModel {
     @Inject
     ITopicsRepository mTopicsRepository;
 
+    public ObservableBoolean addTopicDialogVisible = new ObservableBoolean(false);
+
     public MainViewModel() {
         Components.getRepositoryComponent().inject(this);
     }
@@ -32,16 +35,19 @@ public class MainViewModel extends ViewModel {
 
     public void onUpvoteClicked(@NonNull final Topic topic) {
         topic.setVotes(topic.getVotes() + 1);
-        mTopicsRepository.storeTopic(topic);
+        mTopicsRepository.updateTopic(topic);
     }
 
     public void onDownvoteClicked(@NonNull final Topic topic) {
         topic.setVotes(topic.getVotes() - 1);
-        mTopicsRepository.storeTopic(topic);
+        mTopicsRepository.updateTopic(topic);
     }
 
     public void onAddTopicClicked() {
-
+        // Reset the state
+        addTopicDialogVisible.set(false);
+        // Show dialog
+        addTopicDialogVisible.set(true);
     }
 
 }

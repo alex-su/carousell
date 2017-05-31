@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Carousell Topics</string>
+    <string name="dialog_submit">Submit</string>
+    <string name="dialog_discard">Discard</string>
 </resources>

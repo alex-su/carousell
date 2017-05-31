@@ -38,6 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/padding_main"
             android:src="@drawable/ic_add"
+            android:onClick="@{() -> viewModel.onAddTopicClicked()}"
             app:elevation="@dimen/fab_elevation"
             app:fabSize="normal"/>
 
